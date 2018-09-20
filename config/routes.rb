@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   scope 'api' do
     scope '/v1' do
-      get 'giphy', to: "api/v1/giphy#search"
-      get 'twilio', to: "api/v1/twilio#send"
+      post 'giphy', to: "api/v1/giphy#search"
+      post 'giphy_random', to: "api/v1/giphy#random"
+
+      post 'twilio', to: "api/v1/twilio#send"
     end
 
   end

@@ -7,7 +7,7 @@ module Api
 
         api_key = "dc6zaTOxFJmzC" # String | Giphy API Key.
 
-        q = "cheeseburgers" # String | Search query term or prhase.
+        query = params[:query] # String | Search query term or prhase.
 
         opts = {
           limit: 25, # Integer | The maximum number of records to return.
@@ -19,8 +19,33 @@ module Api
 
         begin
           #Search Endpoint
-          result = api_instance.gifs_search_get(api_key, q, opts)
-          p result
+          result = api_instance.gifs_search_get(api_key, query, opts)
+
+        rescue GiphyClient::ApiError => e
+          puts "Exception when calling DefaultApi->gifs_search_get: #{e}"
+        end
+        render json: {output: result}
+      end
+
+      def random
+        api_instance = GiphyClient::DefaultApi.new
+
+        api_key = "dc6zaTOxFJmzC" # String | Giphy API Key.
+
+        query = params[:query] # String | Search query term or prhase.
+
+        opts = {
+          tag: query, # String | Filters results by specified tag.
+          rating: "g", # String | Filters results by specified rating.
+          fmt: "json" # String | Used to indicate the expected response format. Default is Json.
+        }
+
+        begin
+          #Search Endpoint
+          random = api_instance.gifs_random_get(api_key, opts)
+          result = api_instance.gifs_gif_id_get(api_key, random.data.id)
+
+
         rescue GiphyClient::ApiError => e
           puts "Exception when calling DefaultApi->gifs_search_get: #{e}"
         end

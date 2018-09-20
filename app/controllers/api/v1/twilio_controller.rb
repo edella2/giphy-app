@@ -7,15 +7,15 @@ module Api
         account_sid = ENV["TWILIO_ID"]
         auth_token = ENV["TWILIO_AUTH_TOKEN"]
         @client = Twilio::REST::Client.new(account_sid, auth_token)
-        # body = params[:body]
-        body = "test message"
-        message = @client.messages.create(
-                                     from: ENV["TWILIO_PHONE"],
-                                     body: 'body',
-                                     to: '+15558675310'
-                                   )
+        body = params[:body] + " " + params[:gif]
+        phone = params[:phone]
+        result = @client.messages.create( from: ENV["TWILIO_PHONE"], body: body, to: phone)
+        if result
+          render nothing: true, status: 200
+        else
+          render json: @client.errors, status: 422
+        end
 
-        puts message.sid
       end
 
     end
